@@ -1,4 +1,5 @@
 # CSST106-CS4A
+# Presentation Development:
 
 
 https://github.com/user-attachments/assets/b997a4b7-c42c-48c7-af0b-6a7991bbdb8c
@@ -17,7 +18,7 @@ This synergy allows computer vision systems to make informed decisions based on 
  
 # 3 Types of Image Processing Techniques
 
-__Edge Detection__
+__I. Edge Detection__
 
 * **Edge detection** is a technique used to identify boundaries within an image by highlighting areas where there is a significant change in intensity. This process helps in distinguishing different objects and structures by detecting discontinuities in brightness. By emphasizing the edges, it allows for easier identification and analysis of shapes, contours, and features within the image. Edge detection is fundamental in various applications, such as object recognition, image segmentation, and computer vision, as it simplifies the image data while preserving essential structural information.
 
@@ -39,10 +40,11 @@ __How Edge Detection Helps:__
 4.	__Image Enhancement:__ Sharpens images to improve clarity for AI models.
 5.	__Robotic Vision:__ Helps robots navigate and interact with their environment by detecting edges.
 6.	__Augmented Reality:__ Aligns virtual objects with real-world features by detecting edges.
- 
-#Image Segmentation
 
-**Image Segmentation** is a process used to partition an image into distinct regions or segments based on certain criteria, such as color, intensity, or texture. This technique is crucial for simplifying the representation of an image or making it more meaningful and easier to analyze. By dividing an image into meaningful segments, image segmentation facilitates various applications in computer vision, medical imaging, and object recognition.
+ 
+**II. Image Segmentation**
+
+* **Image Segmentation** is a process used to partition an image into distinct regions or segments based on certain criteria, such as color, intensity, or texture. This technique is crucial for simplifying the representation of an image or making it more meaningful and easier to analyze. By dividing an image into meaningful segments, image segmentation facilitates various applications in computer vision, medical imaging, and object recognition.
 
 **Example:** In medical imaging, image segmentation is employed to identify and isolate different anatomical structures, such as organs or tumors, from MRI or CT scans.
 
@@ -62,9 +64,9 @@ __How Edge Detection Helps:__
 5.	__Satellite Imagery:__ Analyzes and classifies different land cover types or changes in the environment from satellite images.
 6.	__Augmented Reality:__ Improves the integration of virtual elements with the real world by accurately segmenting and understanding the physical environment.
 
-**Convolutional Neural Networks (CNNs)**
+**III. Convolutional Neural Networks (CNNs)**
 
-**Convolutional Neural Networks (CNNs)** are deep learning models designed for processing images and structured grid data. Inspired by the visual cortex, CNNs excel at detecting spatial patterns through layers of convolutional filters.
+* **Convolutional Neural Networks (CNNs)** are deep learning models designed for processing images and structured grid data. Inspired by the visual cortex, CNNs excel at detecting spatial patterns through layers of convolutional filters.
 
 **Key Components:**
 1.	__Convolutional Layers:__ Apply filters to detect features like edges and textures.
@@ -122,3 +124,250 @@ Potential Impact on Future AI Systems
 __Conclusion__
 
 __PETS (Panoptic End-to-End Transformers)__ represent a significant leap forward in the field of image processing, offering a unified and efficient approach to 3D scene understanding. By leveraging the power of transformers, PETS can enhance the accuracy and efficiency of autonomous systems, AR applications, medical imaging, and content creation, paving the way for more advanced and intelligent AI systems in the future.
+
+# Hands-On Exploration
+**Case Study Selection: AI application:ParaScript**
+
+**Signature Fraud Detection**
+* SignatureXpert.AI® is a signature forgery detection software that provides signature verification with unprecedented accuracy. It enables signature authentication in applications including check processing, loan origination, voting by mail, petitions, and countless other uses where it is crucial to prevent signature fraud. SignatureXpert.AI provides the highest degree of accuracy for any document type that requires signature validation, and it exceeds the performance of other signature forgery detection software on the market.
+
+**Signature Analysis**
+* SignatureXpert.AI’s advanced functionality helps to prevent signature fraud by combining multiple verifiers to analyze dozens of signature features and can use multiple references to differentiate between natural anomalies and true irregularities that indicate fraud.
+
+**Implementation Creation**
+Convolutional Neural Network (CNN) is a type of deep learning model specifically designed for processing and analyzing visual data, such as images. It is highly effective in tasks like image classification, object detection, and other image recognition problems due to its ability to automatically learn spatial hierarchies of features from input images.
+
+1. **Redundant Code for Loading and Normalizing Images:** The data loading and normalization sections are repeated. You can consolidate these steps to avoid redundancy.
+
+2. **Reshaping Training and Testing Data:** The reshaping steps for X_train and X_test are done using dummy data. It's better to use the actual data loaded earlier to avoid mismatches.
+
+3. **Consistency in Imports:** Some imports are repeated unnecessarily. Grouping all imports at the top of the script is usually a good practice.
+
+4. **Fix in Reshaping the Test Set:** The reshaping of X_test uses X_train instead of X_test, which seems like a copy-paste error.
+
+# Import Libraries
+
+`import numpy as np`
+
+`import pandas as pd`
+
+`import matplotlib.pyplot as plt`
+
+`import cv2`
+
+`import os`
+
+`from sklearn.model_selection import train_test_split`
+
+`import tensorflow as tf`
+
+`from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout`
+
+`from tensorflow.keras.models import Sequential`
+
+`from tensorflow.keras.preprocessing.image import ImageDataGenerator`
+
+# Load the real and forged signature datasets
+`real_path = '/content/drive/MyDrive/dataset/orininal dataset'`
+
+`forge_path = '/content/drive/MyDrive/dataset/fraud dataset'`
+
+`real_images = []`
+
+`for img_name in os.listdir(real_path):`
+   
+    img = cv2.imread(os.path.join(real_path, img_name), cv2.IMREAD_GRAYSCALE)
+    real_images.append(img)
+
+`real_images = np.array(real_images, dtype=object)`
+
+`forge_images = []`
+
+`for img_name in os.listdir(forge_path):`
+
+    `img = cv2.imread(os.path.join(forge_path, img_name), cv2.IMREAD_GRAYSCALE)`
+    
+    `forge_images.append(img)`
+
+`forge_images = np.array(forge_images, dtype=object)`
+
+# Spliting the Training and Testing Images
+
+`real_labels = np.zeros(real_images.shape[0])`
+
+`forge_labels = np.ones(forge_images.shape[0])`
+
+`X = np.concatenate((real_images, forge_images), axis=0)`
+
+`y = np.concatenate((real_labels, forge_labels), axis=0)`
+
+`X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)`
+
+# Loading the Data and Normalizing it
+`import cv2`
+ 
+`import numpy as np`
+
+# load the dataset
+`real_path = '/content/drive/MyDrive/dataset/orininal dataset'`
+
+`forge_path = '/content/drive/MyDrive/dataset/fraud dataset'`
+
+# set the image size to 128x128
+`img_size = (128, 128)`
+
+`real_images = []`
+
+`for img_name in os.listdir(real_path):`
+    
+    img = cv2.imread(os.path.join(real_path, img_name), cv2.IMREAD_GRAYSCALE)
+    img = cv2.resize(img, img_size)
+    real_images.append(img)
+
+`real_images = np.array(real_images)`
+
+`forge_images = []`
+
+`for img_name in os.listdir(forge_path):`
+    
+    img = cv2.imread(os.path.join(forge_path, img_name), cv2.IMREAD_GRAYSCALE)
+    img = cv2.resize(img, img_size)
+    forge_images.append(img)
+
+`forge_images = np.array(forge_images)`
+
+# normalize the data
+`real_images = real_images.astype('float32') / 255.0`
+
+`forge_images = forge_images.astype('float32') / 255.0`
+
+# Create labels for the real and forged signatures
+`import numpy as np`
+
+`num_real_images = len(real_images)`
+
+`num_forge_images = len(forge_images)`
+
+# Create labels for the real and forged signatures
+`real_labels = np.zeros(num_real_images, dtype=int)`
+
+`forge_labels = np.ones(num_forge_images, dtype=int)`
+
+# Concatenate the real and forged images and labels
+
+`X = np.concatenate((real_images, forge_images), axis=0)`
+
+`y = np.concatenate((real_labels, forge_labels), axis=0)`
+
+# Reshaping the Training Set
+`import numpy as np`
+
+# create dummy data
+`X_train = np.random.rand(40, 128, 128)`
+
+# add another dimension to the array
+`X_train = np.expand_dims(X_train, axis=-1)`
+
+# reshape the array
+`X_train = X_train.reshape(X_train.shape[0], 128, 128, 1)`
+
+`print(X_train.shape)  # output: (40, 128, 128, 1)`
+
+![Screenshot 2024-09-05 230556](https://github.com/user-attachments/assets/94f1c7f3-1530-4140-b20c-c460e110a5f0)
+
+# Reshaping the Test Set
+import numpy as np
+
+# create dummy data
+`X_test = np.random.rand(40, 128, 128)`
+
+# add another dimension to the array
+`X_test = np.expand_dims(X_test, axis=-1)`
+
+# reshape the array
+`X_test = X_train.reshape(X_test.shape[0], 128, 128, 1)`
+
+`print(X_train.shape)  # output: (40, 128, 128, 1)`
+![Screenshot 2024-09-05 230556](https://github.com/user-attachments/assets/94f1c7f3-1530-4140-b20c-c460e110a5f0)
+
+# Making the CNN model
+
+`from tensorflow.keras.models import Sequential`
+
+`from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout`
+
+# Create a Sequential model
+`model = Sequential()`
+
+# Add a convolutional layer
+`model.add(Conv2D(filters=32, kernel_size=(3,3), activation='relu', input_shape=(128, 128, 1)))`
+
+# Add a max pooling layer
+`model.add(MaxPooling2D(pool_size=(2,2)))`
+
+# Add another convolutional layer
+`model.add(Conv2D(filters=64, kernel_size=(3,3), activation='relu'))`
+
+# Add another max pooling layer
+`model.add(MaxPooling2D(pool_size=(2,2)))`
+
+# Flatten the output from the convolutional layers
+`model.add(Flatten())`
+
+# Add a fully connected layer with 128 neurons and a relu activation function
+`model.add(Dense(units=128, activation='relu'))`
+
+# Add a dropout layer to reduce overfitting
+`model.add(Dropout(rate=0.5))`
+
+# Add the output layer with a sigmoid activation function
+`model.add(Dense(units=1, activation='sigmoid'))`
+
+# Print a summary of the model architecture
+`model.summary()`
+
+![Screenshot 2024-09-05 230825](https://github.com/user-attachments/assets/5e068fff-7878-41b6-b9fc-d0ae8d3393e9)
+
+# Evaluating the Model
+`from sklearn.model_selection import train_test_split`
+
+`X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)`
+
+`model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])`
+
+`history = model.fit(X_train, y_train, batch_size=32, epochs=10, validation_data=(X_test, y_test))`
+
+![Screenshot 2024-09-05 230923](https://github.com/user-attachments/assets/9fe8f7d8-38f3-4dfc-9872-4fd2fa3f794a)
+
+# Testing Loss and Accuracy
+`test_loss, test_acc = model.evaluate(X_test, y_test)`
+
+`print("Test accuracy:", test_acc)`
+
+`print("Test loss:", test_loss)`
+
+![Screenshot 2024-09-05 231041](https://github.com/user-attachments/assets/770e8d02-5a04-43c6-b3f2-208c14c6ce34)
+
+# Detection of Real and Forged Signature
+#Load a signature image
+#You can change the image path and check if it is forged or real
+`img = cv2.imread('/content/drive/MyDrive/dataset/orininal dataset/agh1_1.jpg', cv2.IMREAD_GRAYSCALE)`
+
+`img = cv2.resize(img, (128, 128))`
+
+`img = np.array(img).reshape(1, 128, 128, 1) / 255.0`
+
+# Predict the class of the signature image
+`prediction = model.predict(img)`
+
+`if prediction < 0.5:`
+
+    `print("The signature is real.")`
+
+`else:`
+
+   ` print("The signature is forged.")`
+
+![Screenshot 2024-09-05 231212](https://github.com/user-attachments/assets/6fb5af4e-1741-45c1-b2e9-739e3df49efa)
+
+![Screenshot 2024-09-05 231309](https://github.com/user-attachments/assets/06218b78-9b21-4ca9-8536-ebebb300716c)
